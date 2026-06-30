@@ -1,0 +1,42 @@
+# ==============================================================================
+# .gitignore — generic multi-stack starter
+# Delete the sections that don't apply to your project and add your own.
+# ==============================================================================
+
+# ── Environment variables and secrets ─────────────────────────────────────
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# ── Dependencies ──────────────────────────────────────────────────────────
+node_modules/
+vendor/
+.venv/
+venv/
+__pycache__/
+
+# ── Builds / artifacts ────────────────────────────────────────────────────
+dist/
+build/
+out/
+*.log
+coverage/
+.cache/
+tmp/
+
+# ── Operating system ──────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+
+# ── Editors / IDE ─────────────────────────────────────────────────────────
+.idea/
+.vscode/
+*.swp
+*~
+
+# ── AI agents (personal/local only) ───────────────────────────────────────
+# Shared AI config (AGENTS.md, CLAUDE.md, .claude/agents, .claude/skills,
+# .claude/settings.json) IS committed. Only personal/local overrides are ignored.
+.claude/settings.local.json

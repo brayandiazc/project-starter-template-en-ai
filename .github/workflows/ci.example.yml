@@ -1,0 +1,47 @@
+# ==============================================================================
+# CI skeleton — STACK-NEUTRAL.
+# Rename it to `ci.yml` and replace the [*_COMMAND] steps with your project's
+# to enable it. As long as it has the `.example` extension, GitHub won't run it.
+# ==============================================================================
+
+name: CI
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+
+jobs:
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      # - name: Set up environment
+      #   run: [SETUP_COMMAND]
+      - name: Lint
+        run: echo "Replace with [LINT_COMMAND]"
+
+  test:
+    name: Tests
+    runs-on: ubuntu-latest
+    # services:
+    #   db:
+    #     image: [DATABASE_IMAGE]
+    #     ports: ["5432:5432"]
+    steps:
+      - uses: actions/checkout@v7
+      # - name: Set up environment
+      #   run: [SETUP_COMMAND]
+      - name: Tests
+        run: echo "Replace with [TEST_COMMAND]"
+
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    needs: [lint, test]
+    steps:
+      - uses: actions/checkout@v7
+      - name: Build
+        run: echo "Replace with [BUILD_COMMAND]"
