@@ -21,6 +21,33 @@ rm -rf .git
 git init
 ```
 
+### Adopting it in an existing project
+
+"Use this template" only works for new repositories. To bring this structure (docs +
+AI layer) into a project you've already started, copy in just what you need — without
+touching your code or history:
+
+```bash
+# From your project root, on a new branch
+git checkout -b chore/adopt-doc-template
+
+# Download the template without its history
+npx degit brayandiazc/project-starter-template-en-ai .tpl
+
+# Bring in the docs, GitHub templates and the AI layer (copy selectively)
+cp -R .tpl/docs .
+cp -R .tpl/.github .
+cp -R .tpl/.claude .tpl/specs .
+cp .tpl/AGENTS.md .tpl/CLAUDE.md .tpl/.mcp.json.example .
+cp .tpl/TEMPLATE-USAGE.md .
+rm -rf .tpl
+```
+
+- **Don't overwrite** your existing `README.md`, `LICENSE`, or `.gitignore` — merge by hand. Add `.claude/settings.local.json` to your `.gitignore`.
+- Fill the `docs/` with what you already know about your project instead of leaving placeholders.
+- Claude Code reads `CLAUDE.md` (which imports `AGENTS.md`) automatically; run `/init` if you want it to merge with existing context.
+- Commit on the branch, open a PR, then delete `TEMPLATE-USAGE.md`.
+
 ## 3. Replace the placeholders
 
 All placeholders use the `[BRACKETS_IN_UPPERCASE]` format. Find them with:
