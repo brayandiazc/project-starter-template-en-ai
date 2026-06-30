@@ -142,7 +142,7 @@ This is the **AI-ready** variant. On top of the documentation base it adds:
   code-reviewer, test-author, doc-keeper, security-reviewer, debugger, explorer).
 - **[`.claude/skills/`](.claude/skills)** — example **skills** (new-adr, new-spec,
   commit, open-pr, seo-audit, i18n-parity, design-system-audit, copywriting,
-  changelog, accessibility-audit, refactor).
+  changelog, accessibility-audit, refactor, migration-guard).
 - **[`specs/`](specs/README.md)** — a lightweight spec-driven flow for non-trivial
   changes.
 - **[`docs/conventions/ai-agents.md`](docs/conventions/ai-agents.md)** — the rules
