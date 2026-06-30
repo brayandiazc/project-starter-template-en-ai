@@ -44,3 +44,26 @@ Co-Authored-By: [AI_TOOL] <[AI_TOOL_EMAIL]>
 For non-trivial work, capture intent before coding using the lightweight flow in
 [`../../specs/`](../../specs/README.md): a short proposal, a task checklist, and
 a design note. This gives agents (and humans) a clear target and a review gate.
+
+## MCP servers (optional)
+
+This template ships a [`.mcp.json.example`](../../.mcp.json.example) with one
+recommended, stack-agnostic server:
+
+- **Context7** (Upstash) — fetches up-to-date, version-specific library docs so
+  agents don't rely on stale API knowledge. No API key required.
+
+To enable it, copy the file and restart Claude Code:
+
+```bash
+cp .mcp.json.example .mcp.json
+```
+
+Claude Code asks for approval before using any project MCP server.
+
+- **Don't** add MCP servers for files, search, or web — Claude Code's built-in
+  tools already cover those.
+- **Never** put secrets in `.mcp.json`. Reference environment variables (e.g.
+  `${GITHUB_TOKEN}`) and document them in `.env.example` (see [`secrets.md`](secrets.md)).
+- Add project-specific servers (GitHub, Playwright, a database MCP, etc.) as your
+  stack needs them.
