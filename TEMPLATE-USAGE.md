@@ -10,6 +10,11 @@ This guide explains how to turn this template into your project's real documenta
 
 ## 2. Instantiate the template
 
+**Quick AI option:** if you use Claude Code, open the repo and type `/instantiate`; the
+skill runs the interview and fills everything in for you — it detects whether the project
+is new or existing. The rest of this guide is the equivalent manual process, if you prefer
+it.
+
 **Option A — GitHub (recommended):** click **"Use this template" → Create a new repository**. GitHub copies the content without the commit history.
 
 **Option B — Clone and reset the history:**
