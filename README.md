@@ -1,6 +1,7 @@
 <!--
   ┌─────────────────────────────────────────────────────────────────────────┐
   │  This is a TEMPLATE. Before publishing your project:                       │
+  │  0. Using Claude Code? Type /instantiate for guided setup.                 │
   │  1. Read TEMPLATE-USAGE.md to learn how to instantiate it.                 │
   │  2. Replace every [PLACEHOLDER] (find them with grep, see the guide).      │
   │  3. Delete the documents that don't apply to your project.                 │

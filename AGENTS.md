@@ -46,6 +46,10 @@ in [`docs/`](docs/README.md) — read it before non-trivial work.
   [`CONTRIBUTING.md`](CONTRIBUTING.md). Never commit directly to `main`.
 - **Conventional Commits.** `type(scope): summary`. Add the AI co-author line
   for AI-assisted commits (see [`docs/conventions/ai-agents.md`](docs/conventions/ai-agents.md)).
+- **Templated issues & PRs.** When creating an issue or a pull request, ALWAYS use the
+  [`.github/`](.github) templates (`ISSUE_TEMPLATE/` and `PULL_REQUEST_TEMPLATE.md`) and
+  respect the branching in [`CONTRIBUTING.md`](CONTRIBUTING.md). The `/open-issue` and
+  `/open-pr` skills do this for you.
 - **Tests with every change.** Follow [`docs/conventions/testing.md`](docs/conventions/testing.md).
 - **Keep docs in sync.** Update the relevant `docs/` and `CHANGELOG.md`; record
   notable decisions as an ADR in `docs/decisions/`.
