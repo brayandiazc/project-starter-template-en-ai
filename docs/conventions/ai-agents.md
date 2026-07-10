@@ -39,6 +39,16 @@ Mark AI-assisted commits with a trailer so authorship is transparent:
 Co-Authored-By: [AI_TOOL] <[AI_TOOL_EMAIL]>
 ```
 
+## Agent memory vs. documentation
+
+Some tools keep a **persistent memory** per project (e.g. Claude Code's
+auto-memory). Use it only for the personal and ephemeral (preferences, recurring
+corrections) and prune it often. All **durable or team** knowledge — decisions,
+conventions, domain context — belongs in the repository: `docs/`, the ADRs in
+[`../decisions/`](../decisions/README.md), and the `CHANGELOG.md`. If an agent
+"remembers" something the team needs to know, that memory is in the wrong place:
+turn it into versioned documentation.
+
 ## Spec-driven changes (optional)
 
 For non-trivial work, capture intent before coding using the lightweight flow in

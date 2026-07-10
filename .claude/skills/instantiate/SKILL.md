@@ -96,7 +96,9 @@ Delete the docs/conventions that don't apply:
 - API / Library → delete UI docs (`seo`, `views-and-layouts`, `design-system`,
   `branding`).
 - Each capability answered "no" in Batch D → delete its convention (e.g. no i18n →
-  `docs/conventions/i18n.md`).
+  `docs/conventions/i18n.md`) **and its associated skill**: no i18n → `i18n-parity`;
+  no database → `migration-guard`; no SEO/public web → `seo-audit`; no UI (API or
+  library) → `design-system-audit`, `accessibility-audit`, and `copywriting`.
 - **Always** delete the template-repo-only files: the
   `.github/workflows/template-parity.yml` workflow, the
   `.github/scripts/check-parity.sh` script, and the `.claude/skills/port-change/`
