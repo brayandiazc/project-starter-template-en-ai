@@ -15,7 +15,7 @@ Create a well-formed issue using the repository's template.
    - `documentation_request.md` — something missing or wrong in the docs.
    - `task.md` — an internal work task (chore, refactor, tooling).
    - `support_question.md` — a support question or doubt.
-   If the type is ambiguous from `$ARGUMENTS`, ask before choosing.
+     If the type is ambiguous from `$ARGUMENTS`, ask before choosing.
 2. Read the chosen template to learn its required sections and its front matter
    (`title:`, `labels:`, `assignees:`). Respect that front matter.
 3. Fill in each section using the info from `$ARGUMENTS` and the conversation context:
