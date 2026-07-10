@@ -51,6 +51,8 @@ in [`docs/`](docs/README.md) — read it before non-trivial work.
   respect the branching in [`CONTRIBUTING.md`](CONTRIBUTING.md). The `/open-issue` and
   `/open-pr` skills do this for you.
 - **Tests with every change.** Follow [`docs/conventions/testing.md`](docs/conventions/testing.md).
+- **"Done" has a definition.** Before calling a change done, go through
+  [`docs/conventions/definition-of-done.md`](docs/conventions/definition-of-done.md).
 - **Keep docs in sync.** Update the relevant `docs/` and `CHANGELOG.md`; record
   notable decisions as an ADR in `docs/decisions/`.
 
