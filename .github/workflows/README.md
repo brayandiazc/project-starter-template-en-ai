@@ -8,8 +8,8 @@ workflows.
 They work as is, no matter the project's language — don't delete them when instantiating:
 
 - [`quality.yml`](quality.yml) — documentation quality: Markdown format
-  (Prettier), internal links, placeholders, and the test suite for the repo's
-  scripts (see [`../scripts/`](../scripts)).
+  (Prettier), internal links, placeholders, skills/agents structure, and the
+  test suite for the repo's scripts (see [`../scripts/`](../scripts)).
 - [`secret-scan.yml`](secret-scan.yml) — secret scanning with
   [gitleaks](https://github.com/gitleaks/gitleaks) over the history.
 
