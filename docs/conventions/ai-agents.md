@@ -68,17 +68,23 @@ Claude Code asks for approval before using any project MCP server.
 - Add project-specific servers (GitHub, Playwright, a database MCP, etc.) as your
   stack needs them.
 
-## Git guardrails (optional)
+## Deterministic guardrails (optional)
 
 The rules in [`AGENTS.md`](../../AGENTS.md) tell the agent what it **should** do, but don't
-force it. For a hard guarantee, this template ships an opt-in hook,
-[`.claude/hooks/git-guardrails.sh`](../../.claude/hooks/git-guardrails.sh), that
-**deterministically blocks** actions that break the branching in
-[`../../CONTRIBUTING.md`](../../CONTRIBUTING.md): direct commits or pushes to `main`/`develop`
-and force-push to shared branches. The agent can't skip it.
+force it. For a hard guarantee, this template ships two opt-in hooks that
+**block deterministically** — the agent can't skip them:
 
-It is off by default. To enable it, add the hook to `.claude/settings.local.json`
-(personal) or `.claude/settings.json` (shared):
+- [`.claude/hooks/git-guardrails.sh`](../../.claude/hooks/git-guardrails.sh) — blocks
+  actions that break the branching in [`../../CONTRIBUTING.md`](../../CONTRIBUTING.md):
+  direct commits or pushes to `main`/`develop` and force-push to shared branches. It
+  also covers `git -C <path>` and commands chained with `&&`.
+- [`.claude/hooks/secret-guardrails.sh`](../../.claude/hooks/secret-guardrails.sh) —
+  blocks agent writes to secret files: the real `.env` (and variants like
+  `.env.local`) and private keys (`*.pem`, `id_rsa`…). `.env.example` stays editable:
+  it is the contract, with no real values.
+
+They are off by default. To enable them, add the hooks to
+`.claude/settings.local.json` (personal) or `.claude/settings.json` (shared):
 
 ```json
 {
@@ -87,7 +93,19 @@ It is off by default. To enable it, add the hook to `.claude/settings.local.json
       {
         "matcher": "Bash",
         "hooks": [
-          { "type": "command", "command": "$CLAUDE_PROJECT_DIR/.claude/hooks/git-guardrails.sh" }
+          {
+            "type": "command",
+            "command": "$CLAUDE_PROJECT_DIR/.claude/hooks/git-guardrails.sh"
+          }
+        ]
+      },
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "$CLAUDE_PROJECT_DIR/.claude/hooks/secret-guardrails.sh"
+          }
         ]
       }
     ]
@@ -95,6 +113,7 @@ It is off by default. To enable it, add the hook to `.claude/settings.local.json
 }
 ```
 
-Requires `python3` (to read the event's command). The script fails *open*: when in doubt it
-allows, so the workflow isn't stuck. The `/instantiate` skill offers to enable it in its
-permissions step.
+They require `python3` (to read the event). Both scripts fail _open_: when in doubt they
+allow, so the workflow isn't stuck. Their covered cases are tested in
+`.github/scripts/tests/run-tests.sh` (runs in CI). The `/instantiate` skill offers to
+enable them in its permissions step.
