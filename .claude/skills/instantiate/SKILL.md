@@ -46,8 +46,9 @@ For existing projects, pre-fill answers by reading the code.
   design system/UI? (Each "no" means deleting its convention.)
 - **Batch E · Permissions and guardrails:** keep the conservative `ask:[Bash]` in
   `.claude/settings.json`, or create `.claude/settings.local.json` with a read-only
-  allowlist? And enable the **git guardrails** (opt-in hook that blocks commits/push to
-  `main`/`develop` and force-push)?
+  allowlist? Enable the **git guardrails** (opt-in hook that blocks commits/push to
+  `main`/`develop` and force-push)? And the **secret guardrails** (opt-in hook that
+  blocks agent writes to real `.env` files and private keys)?
 
 ## Step 3 — Fill / merge by context
 
@@ -65,6 +66,15 @@ Files that get updated: `README.md`, `AGENTS.md` (overview + commands),
   `README.md`, `LICENSE`, or `.gitignore` — propose the merge by hand. Work on a
   `chore/adopt-doc-template` branch. Suggest running `/init` to merge existing context.
 
+Also write `.template-origin` at the root so `/update-template` can bring in future
+template improvements:
+
+```
+repo=<URL of this template>
+commit=<SHA of the template HEAD used as base>
+date=<today's YYYY-MM-DD>
+```
+
 ## Step 4 — Apply the permissions decision (Batch E)
 
 If "automatic" was chosen, create `.claude/settings.local.json` with a read-only allowlist
@@ -72,8 +82,10 @@ If "automatic" was chosen, create `.claude/settings.local.json` with a read-only
 `git status/log/diff/branch/show/remote`). Verify that `.claude/settings.local.json` is in
 `.gitignore`. If "conservative" was chosen, don't touch permissions.
 
-If the **git guardrails** were accepted, add the `hooks.PreToolUse` block pointing to
-`.claude/hooks/git-guardrails.sh` (see `docs/conventions/ai-agents.md`). Requires `python3`.
+If the **git guardrails** and/or the **secret guardrails** were accepted, add the
+`hooks.PreToolUse` blocks pointing to `.claude/hooks/git-guardrails.sh` (matcher `Bash`)
+and `.claude/hooks/secret-guardrails.sh` (matcher `Write|Edit`) — the full JSON is in
+`docs/conventions/ai-agents.md`. They require `python3`.
 
 ## Step 5 — Delete by type (TEMPLATE-USAGE.md §7 rule)
 
@@ -85,10 +97,19 @@ Delete the docs/conventions that don't apply:
   `branding`).
 - Each capability answered "no" in Batch D → delete its convention (e.g. no i18n →
   `docs/conventions/i18n.md`).
+- **Always** delete the template-repo-only files: the
+  `.github/workflows/template-parity.yml` workflow, the
+  `.github/scripts/check-parity.sh` script, and the `.claude/skills/port-change/`
+  skill — they only serve to maintain the family of variants, not an instantiated
+  project.
 
 Ask before deleting in bulk if there is ambiguity.
 
 ## Step 6 — Wrap-up
+
+Record the instantiation as ADR `0002` (use `docs/decisions/0000-template.md`): project
+context, chosen stack, type, deleted conventions, and the permissions/guardrails policy —
+so the project starts its own decision log.
 
 Show a diff summary and the list of placeholders that still need a human decision.
 Do NOT commit — let the person review. For "existing", remind them everything is on the
