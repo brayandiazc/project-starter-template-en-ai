@@ -9,6 +9,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ### Added
 
+- `release.yml` workflow: every `develop` → `main` merge automatically publishes
+  the GitHub tag and release with the CHANGELOG notes.
+- `template-update-check.yml` workflow: instantiated projects get a weekly issue
+  when this template ships tooling improvements (applied with `/update-template`).
+
 - Initial project structure.
 
 ### Changed
