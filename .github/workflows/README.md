@@ -21,9 +21,13 @@ They work as is, no matter the project's language — don't delete them when ins
 
 ## Included Skeleton
 
-- [`ci.example.yml`](ci.example.yml) — a neutral CI pipeline (lint → test → build).
-  It has the `.example` extension **on purpose** so that GitHub doesn't run it.
-  When you adapt it to your stack, rename it to `ci.yml`.
+- [`ci.yml.example`](ci.yml.example) — a neutral CI pipeline (lint → test → build).
+  The `.example` extension comes **last on purpose**: GitHub runs any `.yml`/`.yaml`
+  file living in this folder, no matter what else the name contains. When you adapt it
+  to your stack, rename it to `ci.yml`.
+
+> Rule for this folder: if a file must not run, it **cannot end in `.yml` or
+> `.yaml`**. The test suite checks this.
 
 ## Recommended Workflows
 
