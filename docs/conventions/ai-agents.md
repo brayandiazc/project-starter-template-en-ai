@@ -81,47 +81,27 @@ Claude Code asks for approval before using any project MCP server.
 ## Deterministic guardrails (optional)
 
 The rules in [`AGENTS.md`](../../AGENTS.md) tell the agent what it **should** do, but don't
-force it. For a hard guarantee, this template ships two opt-in hooks that
-**block deterministically** — the agent can't skip them:
+force it. For a hard guarantee, this template ships two hooks that **block
+deterministically** — the agent can't skip them — and they come **active** in
+`.claude/settings.json`:
 
 - [`.claude/hooks/git-guardrails.sh`](../../.claude/hooks/git-guardrails.sh) — blocks
   actions that break the branching in [`../../CONTRIBUTING.md`](../../CONTRIBUTING.md):
-  direct commits or pushes to `main`/`develop` and force-push to shared branches. It
+  direct commits, local merges or pushes to `main`/`develop`, force-push to shared
+  branches, and **creating work branches off `main`** (they must be born from
+  `develop`; the only exceptions are creating `develop` itself and `hotfix/*`). It
   also covers `git -C <path>` and commands chained with `&&`.
 - [`.claude/hooks/secret-guardrails.sh`](../../.claude/hooks/secret-guardrails.sh) —
   blocks agent writes to secret files: the real `.env` (and variants like
   `.env.local`) and private keys (`*.pem`, `id_rsa`…). `.env.example` stays editable:
   it is the contract, with no real values.
 
-They are off by default. To enable them, add the hooks to
-`.claude/settings.local.json` (personal) or `.claude/settings.json` (shared):
+They come **active** in `.claude/settings.json`. To disable one (not recommended),
+remove its `hooks.PreToolUse` block; for personal tweaks, use
+`.claude/settings.local.json`.
 
-```json
-{
-  "hooks": {
-    "PreToolUse": [
-      {
-        "matcher": "Bash",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "$CLAUDE_PROJECT_DIR/.claude/hooks/git-guardrails.sh"
-          }
-        ]
-      },
-      {
-        "matcher": "Write|Edit",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "$CLAUDE_PROJECT_DIR/.claude/hooks/secret-guardrails.sh"
-          }
-        ]
-      }
-    ]
-  }
-}
-```
+A guardrail that ships switched off guards nothing: experience says the optional never
+gets enabled, so the default is that they are in place.
 
 They require `python3` (to read the event). Both scripts fail _open_: when in doubt they
 allow, so the workflow isn't stuck. Their covered cases are tested in
