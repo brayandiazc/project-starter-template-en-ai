@@ -3,8 +3,6 @@ name: i18n-parity
 description: Checks internationalization parity — that every translation key exists in all locales and that no user-facing strings are hardcoded — following the project's i18n conventions. Use this when the user asks to check translations, verify locale parity, find missing/hardcoded strings, or audit i18n (e.g. "check i18n", "are all locales in sync?").
 ---
 
-<!-- Example skill for the template — adapt or delete to fit your project. -->
-
 Verify locale parity and catch hardcoded user-facing strings.
 
 1. Read `docs/conventions/i18n.md` for the locale file format, where translation files live, the default/reference locale, and the rule for what must be translated.

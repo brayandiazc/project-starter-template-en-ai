@@ -3,8 +3,6 @@ name: seo-audit
 description: Audits a page or route's SEO metadata (title, description, canonical, Open Graph, robots) against the project's SEO conventions and lists what is missing or wrong. Use this when the user asks to check/audit SEO, review meta tags, or verify a page is search-ready (e.g. "audit SEO on the pricing page", "check meta tags for this route").
 ---
 
-<!-- Example skill for the template — adapt or delete to fit your project. -->
-
 Audit the SEO metadata of the page/route the user names.
 
 1. Read `docs/conventions/seo.md` for the project's required tags, value formats (e.g. title length, description length), per-page-type rules, and which pages should be indexed vs. `noindex`.

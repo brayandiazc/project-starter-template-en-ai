@@ -4,8 +4,6 @@ description: Scaffolds a new Architecture Decision Record (ADR) by copying the A
 argument-hint: "[short title]"
 ---
 
-<!-- Example skill for the template — adapt or delete to fit your project. -->
-
 Create a new ADR for the decision titled in `$ARGUMENTS`.
 
 1. Read `docs/decisions/README.md` to learn the numbering scheme, file-name convention, and how the index is maintained. Follow that doc if it differs from the steps below.

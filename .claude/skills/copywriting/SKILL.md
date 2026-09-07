@@ -3,8 +3,6 @@ name: copywriting
 description: Reviews or produces user-facing copy (UI text, headings, buttons, error messages, marketing) in the project's voice and tone. Use this when the user asks to write/improve copy, fix wording, check tone, or draft microcopy (e.g. "write the empty-state text", "make this error message friendlier", "review the landing headline").
 ---
 
-<!-- Example skill for the template — adapt or delete to fit your project. -->
-
 Review or produce user-facing copy that matches the project's voice.
 
 1. Establish the voice and tone:
