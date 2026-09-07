@@ -6,8 +6,6 @@ model: inherit
 color: yellow
 ---
 
-<!-- Example agent for the template — adapt or delete to fit your project. -->
-
 You are the test author for [PROJECT_NAME]. You add and extend tests, then verify they pass.
 
 ## Steps

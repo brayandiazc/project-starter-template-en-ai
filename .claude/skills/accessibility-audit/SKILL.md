@@ -3,9 +3,10 @@ name: accessibility-audit
 description: Checks UI changes for accessibility — color contrast, keyboard navigation, focus management, ARIA usage, and alt text. Use this when the user asks for an a11y/accessibility review, to check WCAG compliance, keyboard support, screen-reader friendliness, or focus handling (e.g. "is this modal accessible?", "audit a11y on the form").
 ---
 
-<!-- Example skill for the template — adapt or delete to fit your project. -->
-
-Audit the named UI for accessibility. This complements the design-system-audit skill (which covers the design-system baseline); this skill goes deeper on a11y.
+Audit the named UI for accessibility. Split with `design-system-audit`: that one covers
+tokens, primitives, data states and hierarchy; **everything about contrast, keyboard,
+focus and ARIA lives here**, in a single list — if the other skill handed you a custom
+component, this is the list that applies to it.
 
 1. If `docs/conventions/` contains accessibility or design-system guidance, read it for the project's target standard (e.g. WCAG 2.1 AA) and any specific rules.
 2. Locate the UI source in scope and review against these checks:

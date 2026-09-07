@@ -1,10 +1,8 @@
 ---
 name: open-issue
-description: Drafts and creates a GitHub issue by filling out the right template from .github/ISSUE_TEMPLATE/ based on the type (bug, feature, documentation, task, or question). Use this when the user asks to open/create an issue, report a bug, or record a task/request (e.g. "open an issue for this bug", "create an issue for the new feature", "log this task"). Does not close or comment on existing issues.
+description: Drafts and creates a GitHub issue by filling out the right template from .github/ISSUE_TEMPLATE/ based on the type (bug, feature, or task). Use this when the user asks to open/create an issue, report a bug, or record a task/request (e.g. "open an issue for this bug", "create an issue for the new feature", "log this task"). Does not close or comment on existing issues.
 argument-hint: "[title or short description]"
 ---
-
-<!-- Example skill for the template — adapt or delete to fit your project. -->
 
 Create a well-formed issue using the repository's template.
 
@@ -12,9 +10,7 @@ Create a well-formed issue using the repository's template.
    matches the issue type:
    - `bug_report.md` — a defect or incorrect behavior.
    - `feature_request.md` — a new feature or improvement.
-   - `documentation_request.md` — something missing or wrong in the docs.
    - `task.md` — an internal work task (chore, refactor, tooling).
-   - `support_question.md` — a support question or doubt.
      If the type is ambiguous from `$ARGUMENTS`, ask before choosing.
 2. Read the chosen template to learn its required sections and its front matter
    (`title:`, `labels:`, `assignees:`). Respect that front matter.
