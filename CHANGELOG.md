@@ -11,6 +11,30 @@ tooling, not its life (see `TEMPLATE-USAGE.md`).
 
 ## [Unreleased]
 
+## [2.2.0] - 2026-09-07
+
+### Fixed
+
+- **Dependabot could not pass the CHANGELOG gate.** The `changelog` job requires an entry
+  from every PR that touches the project; the bot touches the manifest and the lockfile,
+  does not write changelogs and cannot learn to. Its PRs died with the build and the scans
+  green. The exception was already designed —the `sin-changelog` label— nothing was just
+  applying it: now they are born with it.
+- **The escape hatch only worked when applied before opening the PR.** `PR_LABELS` comes
+  from the event payload, so adding `sin-changelog` by hand triggered nothing and a re-run
+  replayed the old payload, without the label — exactly backwards from when you find out
+  you need it. `quality.yml` now listens for `labeled` and `unlabeled`. It costs a run per
+  label change; an emergency exit unusable in the emergency costs more.
+
+### Changed
+
+- **Dependabot PRs come grouped**, one with every bump instead of one per package. Merging
+  N separate bumps in a chain leaves a lockfile nobody ever built: git does not flag a
+  conflict —each bump touches a different spot in the file— and CI does not see it either,
+  because each PR is built on its own branch and never on the result of merging them all.
+  The price, written next to it in `dependabot.yml`: if one bump in the group breaks, the
+  whole group is blocked.
+
 ## [2.1.0] - 2026-09-07
 
 ### Added
@@ -127,7 +151,8 @@ It is not reconstructed here: making it up would be worse than not having it.
 
 <!--
 Version comparison links:
-[Unreleased]: https://github.com/brayandiazc/project-starter-template-en-ai/compare/v2.1.0...HEAD
+[Unreleased]: https://github.com/brayandiazc/project-starter-template-en-ai/compare/v2.2.0...HEAD
+[2.2.0]: https://github.com/brayandiazc/project-starter-template-en-ai/compare/v2.1.0...v2.2.0
 [2.1.0]: https://github.com/brayandiazc/project-starter-template-en-ai/compare/v2.0.0...v2.1.0
 [2.0.0]: https://github.com/brayandiazc/project-starter-template-en-ai/compare/v1.4.0...v2.0.0
 -->
