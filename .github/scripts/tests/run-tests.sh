@@ -16,6 +16,7 @@ CHECK_CHANGELOG="$REPO_ROOT/.github/scripts/check-changelog.sh"
 CHECK_RELEASE="$REPO_ROOT/.github/scripts/check-release.sh"
 CHECK_GIT_FLOW="$REPO_ROOT/.github/scripts/check-git-flow.sh"
 CHECK_WF_IDENTITY="$REPO_ROOT/.github/scripts/check-workflow-identity.sh"
+CHECK_LABELS="$REPO_ROOT/.github/scripts/check-labels.sh"
 DESIGN_MD="$REPO_ROOT/.github/scripts/design-md.sh"
 CHECK_INSTRUCTIONS="$REPO_ROOT/.github/scripts/check-instructions.sh"
 CHECK_HOOKS="$REPO_ROOT/.github/scripts/check-hooks-enabled.sh"
@@ -1645,6 +1646,66 @@ if [ -f "$CHECK_WF_IDENTITY" ]; then
     >"$TMP/wf-example/.github/workflows/ci.yml.example"
   (GITHUB_REPOSITORY=me/mine bash "$CHECK_WF_IDENTITY" "$TMP/wf-example" >/dev/null 2>&1)
   check "condition in a .yml.example → also checked" 1 $?
+fi
+
+# ── check-labels.sh ───────────────────────────────────────────────────────────
+# Declaring a label does not create it. And some mechanisms depend on it
+# existing: dependabot.yml puts `sin-changelog` on its PRs to pass the changelog
+# gate — without the label created the gate takes them down anyway, and the fix
+# looks done because the file says the right thing.
+if [ -f "$CHECK_LABELS" ]; then
+  echo "check-labels.sh:"
+
+  # A fake `gh`: it prints whatever labels we pass in FAKE_LABELS.
+  mkdir -p "$TMP/bin"
+  cat >"$TMP/bin/gh" <<'GHSTUB'
+#!/usr/bin/env bash
+if [ "${1:-}" = "label" ]; then printf '%s\n' ${FAKE_LABELS:-}; exit 0; fi
+exit 0
+GHSTUB
+  chmod +x "$TMP/bin/gh"
+
+  make_labels_md() {  # $1 = name, $2 = declared labels, space separated
+    mkdir -p "$TMP/$1/.github"
+    {
+      printf '# Labels\n\n| Label | Color | What it means |\n| --- | --- | --- |\n'
+      for l in $2; do printf '| `%s` | `#FF0000` | x |\n' "$l"; done
+    } >"$TMP/$1/.github/LABELS.md"
+  }
+
+  run_labels() {  # $1 = folder, $2 = labels that "exist" in the repo
+    (PATH="$TMP/bin:$PATH" FAKE_LABELS="$2" GITHUB_REPOSITORY=yo/mio \
+      bash "$CHECK_LABELS" "$TMP/$1" >/dev/null 2>&1)
+  }
+
+  make_labels_md lb-completo "bug ci-cd sin-changelog"
+  run_labels lb-completo "bug ci-cd sin-changelog"
+  check "all declared labels exist → passes" 0 $?
+
+  make_labels_md lb-falta "bug ci-cd sin-changelog"
+  run_labels lb-falta "bug ci-cd"
+  check "a declared label is missing → fails" 1 $?
+
+  # The real case behind the check: the repo only has the default ones.
+  make_labels_md lb-fabrica "sin-changelog dependencies"
+  run_labels lb-fabrica "bug documentation duplicate enhancement question wontfix"
+  check "repo with only default labels → fails" 1 $?
+
+  # Fails open: without parseable tables there is nothing declared to demand.
+  mkdir -p "$TMP/lb-sin-tabla/.github"
+  printf '# Labels\n\nprose without tables\n' >"$TMP/lb-sin-tabla/.github/LABELS.md"
+  run_labels lb-sin-tabla "bug"
+  check "LABELS.md without tables → no opinion" 0 $?
+
+  mkdir -p "$TMP/lb-sin-md"
+  run_labels lb-sin-md "bug"
+  check "repo without LABELS.md → no opinion" 0 $?
+
+  # Without knowing which repository this is, there is nobody to ask.
+  make_labels_md lb-sin-slug "sin-changelog"
+  (cd "$TMP/lb-sin-slug" && PATH="$TMP/bin:$PATH" GITHUB_REPOSITORY= \
+    bash "$CHECK_LABELS" . >/dev/null 2>&1)
+  check "no remote and no GITHUB_REPOSITORY → no opinion" 0 $?
 fi
 
 # ── Summary ───────────────────────────────────────────────────────────────────
