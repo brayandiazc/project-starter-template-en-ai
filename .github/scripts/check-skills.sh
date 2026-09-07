@@ -50,6 +50,12 @@ if [ -d .claude/skills ]; then
       || err "skills/$slug: the name is not in kebab-case"
     [ -n "$desc" ] || err "skills/$slug: description empty or missing"
     [ "${#desc}" -ge 40 ] || err "skills/$slug: description too short — it must say when to invoke it"
+    # Length: a skill must fit in ~150 lines (.claude/skills/README.md) — the body is
+    # loaded whole into context every time the skill activates. No exceptions: even
+    # `instantiate` fit, by moving the encyclopedic part to a reference.md that is
+    # read at the step that cites it.
+    lines="$(wc -l <"$file" | tr -d ' ')"
+    [ "$lines" -le 160 ] || err "skills/$slug: SKILL.md has $lines lines (limit ~150 — split the encyclopedic part into a reference.md, see .claude/skills/README.md)"
   done
 fi
 
@@ -61,8 +67,32 @@ if [ -d .claude/agents ]; then
     [ "$base" = "README" ] && continue
     name="$(front "$file" name)"
     desc="$(front "$file" description)"
+    model="$(front "$file" model)"
     [ "$name" = "$base" ] || err "agents/$base: name '$name' does not match the file"
     [ -n "$desc" ] || err "agents/$base: description empty or missing"
+    effort="$(front "$file" effort)"
+    # The model is DECLARED, always. Without the field the subagent inherits the
+    # session's — which is a legitimate choice, but it has to be a choice: half the
+    # roster omitted it and nobody noticed, so they all ran on the expensive model
+    # without anyone having decided that. `inherit` is still valid; what stops being
+    # valid is the silence.
+    #
+    # Short aliases, `inherit` and full `claude-*` IDs are accepted. Mind the
+    # difference, because it matters: **aliases move**. `opus` points at the
+    # recommended version of the moment and changes when Anthropic updates it; a full
+    # ID pins it. For a subagent you almost always want the alias.
+    case "$model" in
+      opus | sonnet | haiku | fable | inherit) : ;;
+      claude-*) : ;;
+      "") err "agents/$base: missing 'model' in the frontmatter — declare it (opus, sonnet, haiku, fable, inherit or a claude-* ID)" ;;
+      *) err "agents/$base: model '$model' is not valid (opus, sonnet, haiku, fable, inherit or a claude-* ID)" ;;
+    esac
+    # `effort` is optional: omitting it is equivalent to `high`. It is only declared
+    # when it deviates from that default, so that declaring it means something.
+    case "$effort" in
+      "" | low | medium | high | xhigh | max) : ;;
+      *) err "agents/$base: effort '$effort' is not valid (low, medium, high, xhigh or max)" ;;
+    esac
   done
 fi
 

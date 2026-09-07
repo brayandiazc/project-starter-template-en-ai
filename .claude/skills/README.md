@@ -1,19 +1,25 @@
 # Skills
 
 The skills in this folder are **examples** that ship with the template: they stay
-stack-agnostic because they defer to your [`docs/`](../../docs/README.md).
+stack-agnostic because they defer to your `docs/` (index in
+[`AGENTS.md`](../../AGENTS.md)).
 Adapt or delete them per project.
 
 ## Structure rules (CI validates them)
 
 `quality.yml` runs [`check-skills.sh`](../../.github/scripts/check-skills.sh) on
-every push/PR:
+every PR (and `pre-push` locally):
 
 - Each skill lives in `<kebab-name>/SKILL.md`.
 - The frontmatter `name` equals the folder name, in kebab-case.
 - The `description` is non-empty and says **when to invoke it** — the agent routes
   on that field, so write it as a trigger ("Use this when the user asks…"), with
   example phrases, not as a marketing summary.
+- The body fits in **~150 lines** (the check enforces it, no exceptions). Anything
+  encyclopedic —tables, catalogs, the long why behind a rule— goes in a
+  `reference.md` next to the skill, which the body tells you to read **at the step
+  that needs it** (so context only loads the detail when it's due; `instantiate` is
+  the example).
 - The same applies to the subagents in [`../agents/`](../agents) (`name` = file
   name, non-empty `description`).
 
@@ -29,8 +35,6 @@ rules (those live in `docs/conventions/`).
 name: new-skill
 description: What it does in one sentence. Use this when the user asks for X or Y (e.g. "phrase the user would say", "another phrase"). What it does NOT do, if it could be confused.
 ---
-
-<!-- Example skill for the template — adapt or delete to fit your project. -->
 
 One line on the problem this skill prevents and which `docs/` document it defers to.
 

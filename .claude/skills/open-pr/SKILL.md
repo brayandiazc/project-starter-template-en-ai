@@ -3,9 +3,21 @@ name: open-pr
 description: Drafts a pull request for the current branch by filling out the repository's PR template based on the branch's changes. Use this when the user asks to open/create a PR, prepare a pull request, or write a PR description (e.g. "open a PR", "draft the pull request for this branch"). Does not merge.
 ---
 
-<!-- Example skill for the template — adapt or delete to fit your project. -->
-
 Prepare a pull request for the current branch.
+
+0. **Before drafting anything, get the change ready.** This is the only moment when
+   someone looks at the whole set, and whatever is not updated here never gets updated:
+   - Run the **`doc-keeper`** subagent over the diff: it syncs `docs/architecture/*`,
+     **the diagrams** (entities, screens, auth, components), the ADR if a decision was
+     made, the `CHANGELOG.md` entry, and the roadmap item the spec declared.
+   - Run **`bash .githooks/pre-push`**: the CI checks, in about fifteen seconds and
+     without spending Actions minutes.
+   - Go through [`docs/conventions/definition-of-done.md`](../../../docs/conventions/definition-of-done.md),
+     and especially the part **no machine checks**: a human review of the schema,
+     authorization tested with another role, the four UI states.
+
+   **If anything is red, do not open the PR**: say so and fix it first. A PR that is born
+   red gets normalized and stops being looked at.
 
 1. Read `.github/PULL_REQUEST_TEMPLATE.md` to learn the required sections and checklist.
 2. Gather context on the branch's changes:

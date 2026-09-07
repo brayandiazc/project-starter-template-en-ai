@@ -3,8 +3,6 @@ name: migration-guard
 description: Reviews a database migration before it ships to make sure it is safe — reversible, non-destructive, and backward-compatible — following the project's database conventions. Use this whenever you create, review, or approve a schema or data migration (e.g. "check this migration", "is this migration safe to deploy?").
 ---
 
-<!-- Example skill for the template — adapt or delete to fit your project. -->
-
 Review the migration the user points to (or the one in the current diff) for safety.
 
 1. Read [`docs/conventions/database.md`](../../../docs/conventions/database.md) for

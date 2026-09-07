@@ -1,21 +1,48 @@
 ---
 name: design-system-audit
-description: Audits UI code against the project's design system — semantic tokens, allowed components, required interaction states, and the accessibility baseline. Use this when the user asks to audit/check design-system compliance, verify tokens are used instead of raw values, or confirm a component follows the design guidelines (e.g. "does this component follow our design system?", "audit the new card").
+description: Audits a view or component against the design system on what a script cannot check — interaction states, the four data states, native primitives versus reinvented components, and visual hierarchy. Use this when the user asks to review design-system compliance or whether a component follows the guidelines (e.g. "does this card follow our system?", "audit the settings view").
 ---
 
-<!-- Example skill for the template — adapt or delete to fit your project. -->
+Audit the named UI against the design system in `design/`.
 
-Audit the named UI (component/page) against the design system.
+**You do not review the colors.** The CI `Design system` job
+(`.github/scripts/check-design-tokens.sh`) already fails on any hex, `rgb()`, palette
+utility (`bg-blue-500`) or arbitrary value (`bg-[#0A7A9D]`) in the views. If you think
+you see a raw color, it means the check does not cover that path: say so, and propose
+adding the folder to the script instead of becoming a human linter.
 
-1. Read `docs/conventions/design-system.md` for the token system, the list of approved/blessed components, required states, and the accessibility baseline.
-2. Locate the UI source files in scope.
-3. Check against the conventions:
-   - Tokens — colors, spacing, typography, radii use semantic design tokens, NOT raw hex/px/magic values.
-   - Components — built from the approved component set rather than one-off reimplementations.
-   - States — required interactive states are handled (default, hover, focus, active, disabled, loading, empty, error) as the doc specifies.
-   - Accessibility baseline — meets the minimum the doc requires (contrast, focus visibility, semantic markup).
-4. Report a checklist: each item Pass / Fail, with file:line and a concrete fix referencing the correct token or component.
+Your job is what no script can check:
 
-Example finding: `Raw color #2563eb in Button.tsx:14 — use the \`color-primary\` token per design-system.md.`
+1. Read `design/README.md` (the system) and `docs/conventions/ui.md` (how the views are
+   organized and where the brand assets are).
 
-Do NOT redesign or restyle on your own initiative — report findings and suggest fixes. For deeper a11y checks, defer to the accessibility-audit skill. Always defer to `docs/conventions/design-system.md`.
+2. **Native primitive before a reinvented component.** A dialog built with a `<div>` and
+   `position: fixed` is a finding even if it looks fine: `<dialog>`, `<details>` and
+   `popover` bring focus, keyboard and Escape solved by the browser. If there is a custom
+   component where a primitive belonged, flag it with the concrete replacement.
+
+3. **If the custom component is unavoidable**, flag it and defer its accessibility
+   (focus trap, Escape, `aria-*`, tabbing) to `/accessibility-audit` — that list lives
+   there, in one place, on purpose.
+
+4. **Interaction states**: default, hover, active and disabled. (Visible focus and
+   keyboard navigation are audited by `/accessibility-audit`.)
+
+5. **The four data states**, in every view that loads something: **loading** (a skeleton
+   shaped like the content, not a generic spinner or "Loading…"), **empty** (icon + why
+   it is empty + a CTA that orients), **error** (message + retry action) and **success**.
+   The empty state is the one that most defines the product and the one most often skipped.
+
+6. **Both themes**: light and `data-theme="dark"` — the view must use the tokens in both
+   and no piece may be stuck to a single theme. (Measuring AA contrast belongs to
+   `/accessibility-audit`; `design/preview.html` brings it for the base tokens.)
+
+7. **Hierarchy before decoration**: can you tell what matters in the view without
+   reading the text? Spacing and type weight before borders and shadows.
+
+Report a list: each item **Pass / Fail**, with `file:line` and the concrete fix.
+Example: `Modal.tsx:12 — <div role="dialog"> with no focus trap; use <dialog>`.
+
+Do NOT redesign or restyle on your own initiative: you report and propose. For a full
+accessibility review (measured contrast, screen readers), use `accessibility-audit`.
+`design/` always wins.
