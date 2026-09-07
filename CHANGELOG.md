@@ -11,6 +11,29 @@ tooling, not its life (see `TEMPLATE-USAGE.md`).
 
 ## [Unreleased]
 
+## [2.1.0] - 2026-09-07
+
+### Added
+
+- **`check-git-flow.sh` — that `develop` exists on the remote.** `CONTRIBUTING.md`
+  requires every working branch to be born from `develop` and `AGENTS.md` repeats it;
+  nothing checked it. A `develop` that only exists locally satisfies the rule when you
+  branch and breaks it when you open the PR: `gh pr create --base develop` fails with
+  "Base ref must be a branch", and the obvious way out of that error — opening it against
+  `main` — is exactly what the convention forbids. The failure landed late and its
+  apparent fix broke the flow.
+- **`check-workflow-identity.sh` — that no workflow claims to be another repository.**
+  Template-repo-only workflows are gated with `if: github.repository == 'user/repo'`.
+  When one is copied between repositories that condition travels along as is, and then
+  the job does not fail: it **skips**. In a PR's checks list a grey "skipping" reads
+  almost like a green, so a check can go months without running once. It only has an
+  opinion in the template repo: in an instance, the condition names the template on
+  purpose.
+
+  The two are the same criterion said twice: **a rule that only lives in prose does not
+  hold**, and a check that does not run is worse than one that fails, because the failing
+  one tells you. The test bench goes from 280 to 292 cases.
+
 ## [2.0.0] - 2026-09-07
 
 ### Added
@@ -104,6 +127,7 @@ It is not reconstructed here: making it up would be worse than not having it.
 
 <!--
 Version comparison links:
-[Unreleased]: https://github.com/brayandiazc/project-starter-template-en-ai/compare/v2.0.0...HEAD
+[Unreleased]: https://github.com/brayandiazc/project-starter-template-en-ai/compare/v2.1.0...HEAD
+[2.1.0]: https://github.com/brayandiazc/project-starter-template-en-ai/compare/v2.0.0...v2.1.0
 [2.0.0]: https://github.com/brayandiazc/project-starter-template-en-ai/compare/v1.4.0...v2.0.0
 -->
